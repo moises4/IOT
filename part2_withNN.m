@@ -12,9 +12,9 @@ disp('loading data ...............');
 
 % The training set is  42000 samples
 % testing set is 28,000  samples
-fileID = fopen("fer2013.csv");
-trainingSize = 28709;
-testingSize = 7178;
+fileID = fopen('fer2013.csv', 'r');
+trainingSize = 50;
+testingSize = 10;
 totalDataSize = trainingSize + testingSize;
 
 disp('Sample data opened!');
@@ -45,7 +45,7 @@ disp('Creating final array of pixel values for training data.........');
 for b=1:trainingSize
     pic1 = string(trainTempImages{b,1}); % Convert each line of pixels into a string
     pic2 = str2double(strsplit(pic1)); % Parse the string by whitespaces
-    trainImages = [trainImages; trainEmotions(b, 1), uint8(pic2)]; % Convert emotions and pixel values into unsigned 8 bit integer, add to array
+    trainImages = [trainImages; uint8(trainEmotions(b, 1)), uint8(pic2)]; % Convert emotions and pixel values into unsigned 8 bit integer, add to array
     if (mod(b, 1000) == 0)
         fprintf('%d out of %d training images processed\n', b, trainingSize);
     end
@@ -70,7 +70,7 @@ disp('Creating final array of pixel values for testing data.........');
 for b=1:testingSize
     pic1 = string(testTempImages{b,1}); % Convert each line of pixels into a string
     pic2 = str2double(strsplit(pic1)); % Parse the string by whitespaces
-    testImages = [testImages; testEmotions(b, 1), uint8(pic2)]; % Convert emotions and pixel values into unsigned 8 bit integer, add to array
+    testImages = [testImages;  uint8(testEmotions(b, 1)), uint8(pic2)]; % Convert emotions and pixel values into unsigned 8 bit integer, add to array
     if (mod(b, 1000) == 0)
         fprintf('%d out of %d testing images processed\n', b, testingSize);
     end
@@ -112,10 +112,10 @@ end
 % for model evaluation, and you will only use 2/3 for training our artificial neural network model.
 
 n = size(images, 1);           % number of samples in the dataset
-targets  = images(:,1);        % 1st column is |label|
+targets  = double(images(:,1));        % 1st column is |label|
 targets(targets == 0) = 7;     % use '7' to present '0'
 targetsd = dummyvar(targets);  % convert label into a dummy variable
-
+targetsd = uint8(targetsd);
 % No need for the first column in the (images) set any longer
 inputs = images(:,2:end);      % the rest of columns are predictors
 
@@ -133,6 +133,8 @@ Ytrain = targetsd(:, training(patitionObject));  % 2/3 of the target for trainin
 Xtest = inputs(:, test(patitionObject));         % 1/3 of the input for testing
 Ytest = targets(test(patitionObject));           % 1/3 of the target for testing
 Ytestd = targetsd(:, test(patitionObject));      % 1/3 of the dummy variable for testing
+
+disp('Run the Neural Network GUI Application');
 
 %% Time to Run the Neural Network GUI Application
 

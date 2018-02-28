@@ -13,8 +13,8 @@ disp('loading data ...............');
 % The training set is  42000 samples
 % testing set is 28,000  samples
 fileID = fopen('fer2013.csv', 'r');
-trainingSize = 50;
-testingSize = 10;
+trainingSize = 28709; % Actual value is 28709
+testingSize = 7178; % Actual value is 7178
 totalDataSize = trainingSize + testingSize;
 
 disp('Sample data opened!');
@@ -42,14 +42,16 @@ disp('Emotion values and pixel values parsed!');
 
 disp('Creating final array of pixel values for training data.........');
 % Create the final array of emotions with pixel values
+tic;
 for b=1:trainingSize
-    pic1 = string(trainTempImages{b,1}); % Convert each line of pixels into a string
+    pic1 = char(trainTempImages{b,1}); % Convert each line of pixels into a string
     pic2 = str2double(strsplit(pic1)); % Parse the string by whitespaces
     trainImages = [trainImages; uint8(trainEmotions(b, 1)), uint8(pic2)]; % Convert emotions and pixel values into unsigned 8 bit integer, add to array
     if (mod(b, 1000) == 0)
         fprintf('%d out of %d training images processed\n', b, trainingSize);
     end
 end
+toc;
 disp('Final array for training data created!');
 %% Grab testing data
 % Sort out the data array to grab the emotion values and the pixel values
@@ -67,14 +69,16 @@ disp('Emotion values and pixel values parsed!');
 
 disp('Creating final array of pixel values for testing data.........');
 % Create the final array of emotions with pixel values
+tic;
 for b=1:testingSize
-    pic1 = string(testTempImages{b,1}); % Convert each line of pixels into a string
+    pic1 = char(testTempImages{b,1}); % Convert each line of pixels into a string
     pic2 = str2double(strsplit(pic1)); % Parse the string by whitespaces
     testImages = [testImages;  uint8(testEmotions(b, 1)), uint8(pic2)]; % Convert emotions and pixel values into unsigned 8 bit integer, add to array
     if (mod(b, 1000) == 0)
         fprintf('%d out of %d testing images processed\n', b, testingSize);
     end
 end
+toc;
 disp('Final array for testing data created!');
 disp('All data loaded!');
 
@@ -115,9 +119,9 @@ n = size(images, 1);           % number of samples in the dataset
 targets  = double(images(:,1));        % 1st column is |label|
 targets(targets == 0) = 7;     % use '7' to present '0'
 targetsd = dummyvar(targets);  % convert label into a dummy variable
-targetsd = uint8(targetsd);
+
 % No need for the first column in the (images) set any longer
-inputs = images(:,2:end);      % the rest of columns are predictors
+inputs = double(images(:,2:end));      % the rest of columns are predictors
 
 inputs = inputs';              % transpose input
 targets = targets';            % transpose target
@@ -125,7 +129,7 @@ targetsd = targetsd';         % transpose dummy variable
 
 %% partitioning the dataset based on random selection of indices
 rng(1);                             % for reproducibility
-patitionObject = cvpartition(n,'Holdout',n/3);   % hold out 1/3 of the dataset
+patitionObject = cvpartition(n,'Holdout',uint8(n/3));   % hold out 1/3 of the dataset
 
 Xtrain = inputs(:, training(patitionObject));    % 2/3 of the input for training
 Ytrain = targetsd(:, training(patitionObject));  % 2/3 of the target for training
@@ -141,7 +145,7 @@ disp('Run the Neural Network GUI Application');
 % type NNstart on the command prompt
 
 
-%% Computing the Categorization Accuracy
+%% Computing the Categorization Accuracy. This is the accuracy graph!
 % Now you are ready to use myNNfun.m to predict labels for the heldout data in Xtest and 
 % compare them to the actual labels in Ytest. That gives you a realistic predictive performance against unseen data. This is also the metric Kaggle uses to score submissions.
 % 
@@ -168,10 +172,10 @@ sum(Ytest == Ypred) / length(Ytest) % compare the predicted vs. actual
 % - you can simply adapt the script to do a parameter sweep.
 
 
-%% Sweeo Code Block
+%% Sweep Code Block
 %% Sweeping to choose different sizes for the hidden layer
 
-sweep = [10,50:50:500];                 % parameter values to test
+sweep = [50:50:2000];                 % parameter values to test
 scores = zeros(length(sweep), 1);       % pre-allocation
 % we will use models to save the several neural network result from this
 % sweep and run loop

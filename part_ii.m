@@ -20,15 +20,15 @@ im3   = double(im3)/255;
 image3 = rgb2gray(im3); 
 
 %% Fequency Domain
-F1 = fftshift(fft2(double(image1)));
+F1 = fftshift(fft2(image1));
 F1_Mag = abs(F1);
 F1_Phase = exp(1i*angle(F1));
 
-F2 = fftshift(fft2(double(image2)));
+F2 = fftshift(fft2(image2));
 F2_Mag = abs(F2);
 F2_Phase = exp(1i*angle(F2));
 
-F3 = fftshift(fft2(double(image3)));
+F3 = fftshift(fft2(image3));
 F3_Mag = abs(F3);
 F3_Phase = exp(1i*angle(F3));
 

@@ -1,48 +1,44 @@
-%%
-close all; clear all;
+close all;  clc;
 
 img   = imread('./data/motorcycle.bmp');
-img= rgb2gray(img);
-img = imresize(img,[360, 410]);
+img   = imresize(img,[360, 410]);
+img   = double(img)/255;
+
+img   = rgb2gray(img);
 
 
-img   = fftshift(img(:,:,1));
-F     = fft2(double(img));
-
-magA = 100*log(1+abs(fftshift(F)));
-figure; imagesc(magA); colormap(gray); title('magnitude spectrum');
+F     = fft2(img);
+F     = fftshift(F); 
+magA  = log(1+abs(F));
+figure; imagesc(magA); colormap(gray); title('magnitude spectrum Motorcycle');
 
 phiA = angle(F);
-figure; imagesc(phiA);  colormap(gray); title('phase spectrum');
+figure; imagesc(phiA);  colormap(gray); title('phase spectrum Motorcycle');
 
 %%
 img2   = imread('./data/fish.bmp');
 img2   = rgb2gray(img2);
 img2   = imresize(img2,[360, 410]);
 
-
-img   = fftshift(img2(:,:,1));
 F2     = fft2(double(img2));
-
-magB = 100*log(1+abs(fftshift(F2)));
-figure; imagesc(magB); colormap(gray); title('magnitude spectrum');
+F2 =    fftshift(F2);
+magB = log(1+abs(F2));
+figure; imagesc(magB); colormap(gray); title('magnitude spectrum Fish');
 
 phiB = angle(F2);
-figure; imagesc(phiB);  colormap(gray); title('phase spectrum');
+figure; imagesc(phiB);  colormap(gray); title('phase spectrum Fish');
 
 
 %%
 %Switch magnitude and phase of 2D FFTs
-fftC = magA.*exp(1i.*phiB);
-fftD = magB.*exp(1i.*phiA);
+fftC = magA.*exp(phiB);
+fftD = magB.*exp(phiA);
 
-imageC = ifft2(fftC);
+imageC = ifftshift(ifft2(fftC));
 imageD = ifftshift(ifft2(fftD));
 
 
-figure, imshow((imageC)), colormap gray
-title('Image C  Magnitude')
-figure, imshow((imageD)), colormap(gray); 
-title('Image D  Magnitude')
-
-
+figure, imshow(imageC), colormap gray
+title('Image C ')
+figure, imshow(imageD), colormap gray; 
+title('Image D ')

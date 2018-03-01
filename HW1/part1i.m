@@ -59,6 +59,6 @@ disp(' ');
 tic;
 disp('Display Images');
 figure;
-subplot (1,2,1), imagesc(Reconstruct1), colormap gray, axis off, title('Fish magnitude with motorcycle phase');
-subplot (1,2,2), imagesc(Reconstruct2), colormap gray, axis off, title('Motorcycle magnitude with fish phase');
+subplot (1,2,1), imagesc(Reconstruct1), colormap gray, axis off, title({'Fish magnitude with',  'motorcycle phase'});
+subplot (1,2,2), imagesc(Reconstruct2), colormap gray, axis off, title({'Motorcycle magnitude', 'with fish phase'});
 toc;

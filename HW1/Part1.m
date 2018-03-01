@@ -4,56 +4,61 @@
 clear; close all;  clc;
 
 %% Images
-img   = imread('./data/motorcycle.bmp');
-img   = imresize(img,[360, 410]);
-img   = double(img)/255;
-img   = rgb2gray(img);
+disp('Open Images');
+tic;
+im1   = imread('./data/motorcycle.bmp');
+im1   = imresize(im1,[360, 410]);
+im1   = double(im1)/255;
+im1   = rgb2gray(im1);
+toc;
+tic;
+im2   = imread('./data/fish.bmp');
+im2   = imresize(im2,[360, 410]);
+im2   = double(im2)/255;
+im2   = rgb2gray(im2);
+toc;
+disp('End open images');
 
-img2   = imread('./data/fish.bmp');
-img2   = imresize(img2,[360, 410]);
-img2   = double(img2)/255;
-img2   = rgb2gray(img2);
+%% Fequency Domain
 
-% imshowpair(img, img2, 'montage'); title ('Images');
 
-%% Phase and Magnitude
-% Imgradient
-[m1, p1] = imgradient(img);
-% imshowpair(m1, p1, 'montage'); title ('Imgradient Moto');
-[m2, p2] = imgradient(img2);
-% imshowpair(m2, p2, 'montage'); title ('Imgradient Fish');
+disp(' ');
+tic;
+disp('fftshits');
+F1 = fftshift(fft2(im1));
+F2 = fftshift(fft2(im2));
+toc;
 
-% Part ii method
-F1 = fftshift(fft2(double(img)));
+disp(' ');
+tic;
+disp('Neutralize Magnitude');
+% Neutralize Magnitude
 F1_Mag = abs(F1);
-F1_Phase = exp(1i*angle(F1));
-
-F2 = fftshift(fft2(double(img2)));
 F2_Mag = abs(F2);
+
+toc;
+disp(' ');
+
+tic;
+disp('Phase');
+% Phase
+F1_Phase = exp(1i*angle(F1));
 F2_Phase = exp(1i*angle(F2));
+toc;
+disp(' ');
+%% Reconstructin
 
-% figure; imagesc(abs(F1_Mag)); colormap(gray); title('Magnitude Motorcycle');
-% figure; imagesc(abs(F1_Phase));  colormap(gray); title('Phase Motorcycle');
-% figure; imagesc(abs(F2_Mag)); colormap(gray); title('Magnitude Fish');
-% figure; imagesc(abs(F2_Phase));  colormap(gray); title('Phase Fish');
+tic;
+disp('Reconstruct');
+Reconstruct1 = log(abs(ifft2(ifftshift(F2_Mag.*F1_Phase)))+1);
+Reconstruct2 = log(abs(ifft2(ifftshift(F1_Mag.*F2_Phase)))+1);
+toc;
+disp(' ');
+%% Display reconstructed images
 
-%% Switch magnitude and phase of 2D FFTs
-Hybrid1 = F1_Mag.*F2_Phase;
-Hybrid2 = F2_Mag.*F1_Phase;
-
-Hybrid1 = ifft2(ifftshift(Hybrid1));
-Hybrid2 = ifft2(ifftshift(Hybrid2));
-
-figure, imshow(Hybrid1), colormap gray, title('Hybrid 1');
-figure, imshow(Hybrid2), colormap gray, title('Hybrid 2');
-
-% Old method
-% F1     = fftshift(fft2(double(img1)));
-% magB   = log(1+abs(F2));
-% phiB = angle(F2);
-% F2     = fftshift(fft2(double(img2)));
-% magB   = log(1+abs(F2));
-% phiB = angle(F2);
-
-% fftC = magA.*exp(phiB);
-% fftD = magB.*exp(phiA);
+tic;
+disp('Display Images');
+figure;
+subplot (1,2,1), imagesc(Reconstruct1), colormap gray, axis off, title({'Fish magnitude with',  'motorcycle phase'});
+subplot (1,2,2), imagesc(Reconstruct2), colormap gray, axis off, title({'Motorcycle magnitude', 'with fish phase'});
+toc;

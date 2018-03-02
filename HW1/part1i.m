@@ -31,8 +31,8 @@ toc;
 
 disp(' ');
 tic;
-disp('Neutralize Magnitude');
-% Neutralize Magnitude
+disp('Magnitude');
+% Magnitude
 F1_Mag = abs(F1);
 F2_Mag = abs(F2);
 

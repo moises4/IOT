@@ -10,8 +10,6 @@ close all; % closes all figures
 
 disp('loading data ...............');
 
-% The training set is  42000 samples
-% testing set is 28,000  samples
 fileID = fopen('fer2013.csv', 'r');
 trainingSize = 28709; % Actual value is 28709
 testingSize = 7178; % Actual value is 7178
@@ -94,14 +92,14 @@ disp('Training and testing arrays successfully combined!');
 % data, because  reshape operates by column-wise rather than row-wise.
 
 %% Reshape the data to Visualize example for the digits sample
-figure    ;                                     % plot images
-colormap(gray)                                  % set to grayscale
-for i = 1:25                                    % preview first 25 samples
-    subplot(5,5,i)                              % plot them in 6 x 6 grid
-    digit = reshape(images(i, 2:end), [48,48])';    % row = 48 x 48 image
-    imagesc(digit)                              % show the image
-    title(num2str(images(i, 1)))                % show the label
-end
+% figure    ;                                     % plot images
+% colormap(gray)                                  % set to grayscale
+% for i = 1:25                                    % preview first 25 samples
+%     subplot(5,5,i)                              % plot them in 6 x 6 grid
+%     digit = reshape(images(i, 2:end), [48,48])';    % row = 48 x 48 image
+%     imagesc(digit)                              % show the image
+%     title(num2str(images(i, 1)))                % show the label
+% end
 
 
 %% The labels range from 0 to 9, but we will use '10' to represent '0' because MATLAB is indexing is 1-based.
@@ -129,7 +127,7 @@ targetsd = targetsd';         % transpose dummy variable
 
 %% partitioning the dataset based on random selection of indices
 rng(1);                             % for reproducibility
-patitionObject = cvpartition(n,'Holdout', 1/3);   % hold out 1/3 of the dataset
+patitionObject = cvpartition(n,'Holdout', 1/10);   % hold out 1/3 of the dataset
 
 Xtrain = inputs(:, training(patitionObject));    % 2/3 of the input for training
 Ytrain = targetsd(:, training(patitionObject));  % 2/3 of the target for training
@@ -153,10 +151,10 @@ disp('Run the Neural Network GUI Application');
 % for each possible label. You simply choose the most probable label as your prediction 
 %     and then compare it to the actual label. You should see 95% categorization accuracy.
 
-% Ypred = myNNfun(Xtest);             % predicts probability for each label
-% Ypred(:, 1:5)                       % display the first 5 columns
-% [~, Ypred] = max(Ypred);            % find the indices of max probabilities
-% sum(Ytest == Ypred) / length(Ytest) % compare the predicted vs. actual
+%  Ypred = myNNfun(Xtest);             % predicts probability for each label
+%  Ypred(:, 1:5)                       % display the first 5 columns
+%  [~, Ypred] = max(Ypred);            % find the indices of max probabilities
+%  sum(Ytest == Ypred) / length(Ytest) % compare the predicted vs. actual
 
 
 % You probably noticed that the artificial neural network model generated from 
@@ -175,7 +173,7 @@ disp('Run the Neural Network GUI Application');
 %% Sweep Code Block
 %% Sweeping to choose different sizes for the hidden layer
 
-sweep = [1100:150:2000];                 % parameter values to test
+sweep = [1100:150:2300];                 % parameter values to test
 scores = zeros(length(sweep), 1);       % pre-allocation
 % we will use models to save the several neural network result from this
 % sweep and run loop
@@ -194,7 +192,6 @@ for i = 1:length(sweep)
     p = net(Xtest);                     % predictions
     [~, p] = max(p);                    % predicted labels
     scores(i) = sum(Ytest == p) /length(Ytest);  % categorization accuracy
-        
 end
 disp("Training complete!");
 % Let's now plot how the categorization accuracy changes versus number of 

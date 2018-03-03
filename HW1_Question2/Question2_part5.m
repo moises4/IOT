@@ -11,12 +11,12 @@ close all; % closes all figures
 disp('loading data ...............');
 
 fileID = fopen('fer2013.csv', 'r');
-trainingSize = 10000; % Actual value is 28709
-testingSize = 0; % Actual value is 7178
+trainingSize = 28709; % Actual value is 28709
+testingSize = 7178; % Actual value is 7178
 totalDataSize = trainingSize + testingSize;
 
 disp('Sample data opened!');
-
+ 
 disp('Extracting data...........');
 % Grab the headers from the original data set
 headers = textscan(fileID, '%s %s %s', 1, 'delimiter',',');
@@ -92,13 +92,11 @@ disp('Training and testing arrays successfully combined!');
 % data, because  reshape operates by column-wise rather than row-wise.
 
 %% Preprocess the images to grab only the magnitudes of the image
-disp('Preprocessing images...');
+disp('Preprocessing images. This will take a while...');
 
 processedImages = [];
-figure    ;                                     
-colormap(gray)                                  
-for i = 1:4                     
-    subplot(2,2,i)                              
+                                
+for i = 1:totalDataSize                                                   
     reshapedImage = reshape(images(i, 2:end), [48,48])'; % Reshape image into 48x48 matrix
     downSampledImage = reshapedImage(1:2:end, 1:2:end); % Down sample matrix into 24x24 matrix
     fftImage = fft2(downSampledImage); % Take fourier transform of image
@@ -118,26 +116,30 @@ for i = 1:4
     %imshow(fftShiftImage);
     %imagesc(F_Mag);
     %imagesc(F_Mag_Copy);
-    imagesc(Reconstruct);
+    %imagesc(Reconstruct);
     %imagesc(Reconstruct2);
-    title(num2str(images(i, 1)))
+    %title(num2str(images(i, 1)))
     
     F_Mag_Copy = reshape(F_Mag_Copy,[1,256]);
     
     processedImages = [processedImages; F_Mag_Copy];
+    
+    if (mod(i, 1000) == 0)
+        fprintf('%d out of %d images processed\n', i, totalDataSize);
+    end
 end
 
 disp('Preprocessing complete!');
 
 %% Reshape the data to Visualize example for the digits sample
-figure    ;                                     % plot images
-colormap(gray)                                  % set to grayscale
-for i = 1:25                                    % preview first 25 samples
-    subplot(5,5,i)                              % plot them in 6 x 6 grid
-    digit = reshape(images(i, 2:end), [48,48])';    % row = 48 x 48 image
-    imagesc(digit)                              % show the image
-    title(num2str(images(i, 1)))                % show the label
-end
+% figure    ;                                     % plot images
+% colormap(gray)                                  % set to grayscale
+% for i = 1:25                                    % preview first 25 samples
+%     subplot(5,5,i)                              % plot them in 6 x 6 grid
+%     digit = reshape(processedImages(i, 2:end), [48,48])';    % row = 48 x 48 image
+%     imagesc(digit)                              % show the image
+%     title(num2str(processedImages(i, 1)))                % show the label
+% end
 
 
 %% The labels range from 0 to 9, but we will use '10' to represent '0' because MATLAB is indexing is 1-based.
@@ -151,13 +153,13 @@ end
 % transpose it. Then you will partition the data so that you hold out 1/3 of the data
 % for model evaluation, and you will only use 2/3 for training our artificial neural network model.
 
-n = size(images, 1);           % number of samples in the dataset
+n = size(processedImages, 1);           % number of samples in the dataset
 targets  = double(images(:,1));        % 1st column is |label|
 targets(targets == 0) = 7;     % use '7' to present '0'
 targetsd = dummyvar(targets);  % convert label into a dummy variable
 
 % No need for the first column in the (images) set any longer
-inputs = double(images(:,2:end));      % the rest of columns are predictors
+inputs = double(processedImages(:,2:end));      % the rest of columns are predictors
 
 inputs = inputs';              % transpose input
 targets = targets';            % transpose target
@@ -211,7 +213,7 @@ disp('Run the Neural Network GUI Application');
 %% Sweep Code Block
 %% Sweeping to choose different sizes for the hidden layer
 
-sweep = [1100:150:2300];                 % parameter values to test
+sweep = [50:50:250];                 % parameter values to test
 scores = zeros(length(sweep), 1);       % pre-allocation
 % we will use models to save the several neural network result from this
 % sweep and run loop
@@ -222,9 +224,9 @@ trainFcn = 'trainscg';                  % scaled conjugate gradient
 for i = 1:length(sweep)
     hiddenLayerSize = sweep(i);         % number of hidden layer neurons
     net = patternnet(hiddenLayerSize);  % pattern recognition network
-    net.divideParam.trainRatio = 90/100;% 70% of data for training
-    net.divideParam.valRatio = 5/100;  % 15% of data for validation
-    net.divideParam.testRatio = 5/100; % 15% of data for testing
+    net.divideParam.trainRatio = 70/100;% 70% of data for training
+    net.divideParam.valRatio = 15/100;  % 15% of data for validation
+    net.divideParam.testRatio = 15/100; % 15% of data for testing
     net = train(net, x, t);             % train the network
     models{i} = net;                    % store the trained network
     p = net(Xtest);                     % predictions

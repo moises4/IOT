@@ -17,4 +17,7 @@ FOR BOTH PARTS
 
 Use Xtrain and Ytrain for your inputs for the neural network trainer
 
+The following classes correspond to these facial expressions
+1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral, 7=Angry 
+
 ____________________________________________________________________________________________________________________

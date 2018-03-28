@@ -60,6 +60,16 @@ for i = 1:allPixelData
     end
 end
 
+figure    ;                                     % plot images
+colormap(gray)                                  % set to grayscale
+for i = 1:25                                    % preview first 25 samples
+    subplot(5,5,i)                              % plot them in 6 x 6 grid
+    digit = reshape(processedImages(i, 2:end), [24,24])';    % row = 48 x 48 image
+    imagesc(digit)                              % show the image
+    title(num2str(processedImages(i, 1)))                % show the label
+end
+
+
 %% ToDO by students: after loopoing , save the wavelets data structure as a preprocessed 
 % dataaset so that you can also use it in future without going through 
 % all previous steps again

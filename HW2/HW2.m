@@ -14,17 +14,24 @@ close all; % closes all figures
 
 pixelsChars = char(pixels);
 
+fprint("Processing chunk 1...");
 tic
 pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
 toc
+fprint("Chunk 1 processed!");
 
 %% ToDO by students: repeat partitionin and processing until you extract all data pixels
+fprint("Processing chunk 2...");
 pixelsData_chunk2 = str2num(pixelChars(10001:20000,:));
+fprint("Chunk 2 processed!");
 
+fprint("Processing chunk 3...");
 pixelsData_chunk3 = str2num(pixelChars(20001:30000,:));
+fprint("Chunk 3 processed!");
 
+fprint("Processing chunk 4...");
 pixelsData_chunk4 = str2num(pixelChars(30001:35888,:));
-
+fprint("Chunk 4 processed!");
 %% ToDO by students:use matlab syntax to combine the pixels data
 %% be smart and save the pixels data as well before you actually use it for
 %% wavelets calculations, so that if you suffer any crashes, you never need

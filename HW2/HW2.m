@@ -1,7 +1,6 @@
 % Author: Abdallah S. Abdallah aua639@psu.edu
 % HW2_template.m - Version: 0.2
 
-
 clear;
 clc;
 close all; % closes all figures
@@ -10,34 +9,31 @@ close all; % closes all figures
 
 % I already used Matlab GUI to generatre the function
 % (importfileAsColVectors) and uploaded it to the homework folder as well
+disp('Load CSV');
 [emotion,pixels,Usage] = importfileAsColVectors('fer2013.csv',2, 35888 );
-
 pixelsChars = char(pixels);
-
-fprint("Processing chunk 1...");
-tic
-pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
-toc
-fprint("Chunk 1 processed!");
+disp('process complete');
 
 %% ToDO by students: repeat partitionin and processing until you extract all data pixels
-fprint("Processing chunk 2...");
-pixelsData_chunk2 = str2num(pixelChars(10001:20000,:));
-fprint("Chunk 2 processed!");
+disp('str2num');
+totalDataSize = 1000;
+pixelsData_Test = str2num(pixelsChars(1:1000,:));
 
-fprint("Processing chunk 3...");
-pixelsData_chunk3 = str2num(pixelChars(20001:30000,:));
-fprint("Chunk 3 processed!");
+% tic
+% pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
+% pixelsData_chunk2 = str2num(pixelChars(10001:20000,:));
+% pixelsData_chunk3 = str2num(pixelChars(20001:30000,:));
+% pixelsData_chunk4 = str2num(pixelChars(30001:35888,:));
+% toc
+disp('process complete');
 
-fprint("Processing chunk 4...");
-pixelsData_chunk4 = str2num(pixelChars(30001:35888,:));
-fprint("Chunk 4 processed!");
 %% ToDO by students:use matlab syntax to combine the pixels data
 %% be smart and save the pixels data as well before you actually use it for
 %% wavelets calculations, so that if you suffer any crashes, you never need
 %% to rerun the .csv reading and parsing code again
 
-allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
+% allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
+allPixelData = pixelsData_Test;
 
 %% ToDO by students:Loop over each row to execute
 % restructure each row into 2D Image matrix
@@ -50,14 +46,15 @@ disp('Preprocessing images. This will take a while...');
 
 processedImages = [];
                                 
-for i = 1:allPixelData                                                   
-    reshapedImage = reshape(images(i, 2:end), [48,48])'; % Reshape image into 48x48 matrix
-    downSampledImage = reshapedImage(1:2:end, 1:2:end); % Down sample matrix into 24x24 matrix
+for i = 1:totalDataSize                                                   
+    reshapedImage = reshape(allPixelData(i, 1:end), [48,48])'; % Reshape image into 48x48 matrix
+%     downSampledImage = reshapedImage(1:2:end, 1:2:end); % Down sample matrix into 24x24 matrix
+    reshapedImage = imrotate(reshapedImage,90);
     
     %%Wavelet extraction occurs here
-    [a, h, v, d] = haart2(downSampledImage, 2);
-        
-    waveletImage = reshape(a,[1,576]);
+    [a, h, v, d] = haart2(reshapedImage,1);
+    len = length(a);    
+    waveletImage = reshape(a,[1,len*len]);
     
     processedImages = [processedImages; waveletImage];
     
@@ -67,11 +64,14 @@ for i = 1:allPixelData
     end
 end
 
-figure    ;                                     % plot images
+disp('process complete');
+
+disp('Display Images');
+figure;                                         % plot images
 colormap(gray)                                  % set to grayscale
 for i = 1:25                                    % preview first 25 samples
     subplot(5,5,i)                              % plot them in 6 x 6 grid
-    digit = reshape(processedImages(i, 2:end), [24,24])';    % row = 48 x 48 image
+    digit = reshape(processedImages(i, 1:end), [len,len])';    % row = 48 x 48 image
     imagesc(digit)                              % show the image
     title(num2str(processedImages(i, 1)))                % show the label
 end

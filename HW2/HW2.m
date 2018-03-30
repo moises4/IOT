@@ -22,9 +22,9 @@ totalDataSize = 35888;
 
 % tic
 pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
-pixelsData_chunk2 = str2num(pixelChars(10001:20000,:));
-pixelsData_chunk3 = str2num(pixelChars(20001:30000,:));
-pixelsData_chunk4 = str2num(pixelChars(30001:35888,:));
+pixelsData_chunk2 = str2num(pixelsChars(10001:20000,:));
+pixelsData_chunk3 = str2num(pixelsChars(20001:30000,:));
+pixelsData_chunk4 = str2num(pixelsChars(30001:35888,:));
 % toc
 disp('process complete');
 

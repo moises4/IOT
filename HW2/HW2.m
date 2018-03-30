@@ -16,14 +16,15 @@ disp('process complete');
 
 %% ToDO by students: repeat partitionin and processing until you extract all data pixels
 disp('str2num');
-totalDataSize = 1000;
-pixelsData_Test = str2num(pixelsChars(1:1000,:));
+totalDataSize = 35888;
+
+% pixelsData_Test = str2num(pixelsChars(1:1000,:));
 
 % tic
-% pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
-% pixelsData_chunk2 = str2num(pixelChars(10001:20000,:));
-% pixelsData_chunk3 = str2num(pixelChars(20001:30000,:));
-% pixelsData_chunk4 = str2num(pixelChars(30001:35888,:));
+pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
+pixelsData_chunk2 = str2num(pixelChars(10001:20000,:));
+pixelsData_chunk3 = str2num(pixelChars(20001:30000,:));
+pixelsData_chunk4 = str2num(pixelChars(30001:35888,:));
 % toc
 disp('process complete');
 
@@ -32,8 +33,8 @@ disp('process complete');
 %% wavelets calculations, so that if you suffer any crashes, you never need
 %% to rerun the .csv reading and parsing code again
 
-% allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
-allPixelData = pixelsData_Test;
+% allPixelData = pixelsData_Test;
+allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
 
 %% ToDO by students:Loop over each row to execute
 % restructure each row into 2D Image matrix
@@ -44,19 +45,28 @@ allPixelData = pixelsData_Test;
 
 disp('Preprocessing images. This will take a while...');
 
-processedImages = [];
+haarProcessed = [];
+dbProcessed = [];
                                 
 for i = 1:totalDataSize                                                   
     reshapedImage = reshape(allPixelData(i, 1:end), [48,48])'; % Reshape image into 48x48 matrix
 %     downSampledImage = reshapedImage(1:2:end, 1:2:end); % Down sample matrix into 24x24 matrix
     reshapedImage = imrotate(reshapedImage,90);
     
-    %%Wavelet extraction occurs here
-    [a, h, v, d] = haart2(reshapedImage,1);
+    %%Haar Wavelet
+    wname = 'haar';
+    [a, h, v, d] = dwt2(reshapedImage,wname);
     len = length(a);    
     waveletImage = reshape(a,[1,len*len]);
+    haarProcessed = [haarProcessed; waveletImage];
     
-    processedImages = [processedImages; waveletImage];
+    
+    %%Daubechies Wavelet
+    wname = 'db1';
+    [a, h, v, d] = dwt2(reshapedImage,wname);
+    len2 = length(a);    
+    waveletImage = reshape(a,[1,len2*len2]);
+    dbProcessed = [dbProcessed; waveletImage];
     
     
     if (mod(i, 1000) == 0)
@@ -71,9 +81,18 @@ figure;                                         % plot images
 colormap(gray)                                  % set to grayscale
 for i = 1:25                                    % preview first 25 samples
     subplot(5,5,i)                              % plot them in 6 x 6 grid
-    digit = reshape(processedImages(i, 1:end), [len,len])';    % row = 48 x 48 image
+    digit = reshape(haarProcessed(i, 1:end), [len,len])';    % row = 48 x 48 image
     imagesc(digit)                              % show the image
-    title(num2str(processedImages(i, 1)))                % show the label
+    title(num2str(haarProcessed(i, 1)))                % show the label
+end
+
+figure;                                         % plot images
+colormap(gray)                                  % set to grayscale
+for i = 1:25                                    % preview first 25 samples
+    subplot(5,5,i)                              % plot them in 6 x 6 grid
+    digit = reshape(dbProcessed(i, 1:end), [len2,len2])';    % row = 48 x 48 image
+    imagesc(digit)                              % show the image
+    title(num2str(dbProcessed(i, 1)))                % show the label
 end
 
 
@@ -81,6 +100,8 @@ end
 % dataaset so that you can also use it in future without going through 
 % all previous steps again
 
+csvwrite('haarData.csv',haarProcessed)
+csvwrite('dbData.csv',dbProcessed)
 
 %% ToDO by students: Now continue the homework on your own, you should not 
 % need more guidance

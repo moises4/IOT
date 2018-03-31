@@ -15,7 +15,7 @@ pixelsChars = char(pixels);
 
 %% ToDO by students: repeat partitionin and processing until you extract all data pixels
 disp('str2num');
-totalDataSize = 35888;
+totalDataSize = 35887;
 
 % pixelsData_Test = str2num(pixelsChars(1:50,:));
 

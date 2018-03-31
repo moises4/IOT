@@ -10,7 +10,7 @@ close all; % closes all figures
 % I already used Matlab GUI to generatre the function
 % (importfileAsColVectors) and uploaded it to the homework folder as well
 disp('Load CSV');
-[emotion,pixels,Usage] = importfileAsColVectors('fer2013.csv',2, 35887 );
+[emotion,pixels,Usage] = importfileAsColVectors('fer2013.csv',2, 35888 );
 pixelsChars = char(pixels);
 
 %% ToDO by students: repeat partitionin and processing until you extract all data pixels

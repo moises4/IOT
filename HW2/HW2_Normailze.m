@@ -15,23 +15,23 @@ pixelsChars = char(pixels);
 
 %% ToDO by students: repeat partitionin and processing until you extract all data pixels
 disp('str2num');
-totalDataSize = 50;
-% totalDataSize = 35887;
+% totalDataSize = 50;
+totalDataSize = 35887;
 
-pixelsData_Test = str2num(pixelsChars(1:50,:));
+% pixelsData_Test = str2num(pixelsChars(1:50,:));
 
-% pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
-% pixelsData_chunk2 = str2num(pixelsChars(10001:20000,:));
-% pixelsData_chunk3 = str2num(pixelsChars(20001:30000,:));
-% pixelsData_chunk4 = str2num(pixelsChars(30001:35887,:));
+pixelsData_chunk1 = str2num(pixelsChars(1:10000,:));
+pixelsData_chunk2 = str2num(pixelsChars(10001:20000,:));
+pixelsData_chunk3 = str2num(pixelsChars(20001:30000,:));
+pixelsData_chunk4 = str2num(pixelsChars(30001:35887,:));
 
 %% ToDO by students:use matlab syntax to combine the pixels data
 %% be smart and save the pixels data as well before you actually use it for
 %% wavelets calculations, so that if you suffer any crashes, you never need
 %% to rerun the .csv reading and parsing code again
 
-allPixelData = pixelsData_Test;
-% allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
+% allPixelData = pixelsData_Test;
+allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
 
 %% ToDO by students:Loop over each row to execute
 % restructure each row into 2D Image matrix

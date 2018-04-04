@@ -35,7 +35,12 @@ disp('process complete');
 %% to rerun the .csv reading and parsing code again
 
 % allPixelData = pixelsData_Test;
-allPixelData = [pixelsData_chunk1; pixelsData_chunk2; pixelsData_chunk3; pixelsData_chunk4];
+newpixels_Chunk1 = (pixelsData_chunk1 - mean(pixelsData_chunk1))/std(pixelsData_chunk1);
+newpixels_Chunk2 = (pixelsData_chunk2 - mean(pixelsData_chunk2))/std(pixelsData_chunk2);
+newpixels_Chunk3 = (pixelsData_chunk3 - mean(pixelsData_chunk3))/std(pixelsData_chunk3);
+newpixels_Chunk4 = (pixelsData_chunk4 - mean(pixelsData_chunk4))/std(pixelsData_chunk4);
+
+allPixelData = [newpixels_Chunk1 newpixels_Chunk2 newpixels_Chunk3 newpixels_Chunk4];
 
 %% ToDO by students:Loop over each row to execute
 % restructure each row into 2D Image matrix

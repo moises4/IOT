@@ -3,8 +3,9 @@ clc;
 close all; % closes all figures
 
 
-coifImages = csvread('C:\Users\dhg5054\Downloads\coifData.csv');
-dbImages = csvread('C:\Users\dhg5054\Downloads\dbData.csv');
+
+coifImages = csvread('coifData.csv');
+dbImages = csvread('dbData.csv');
 
 allPixelData = [coifImages, dbImages];
 

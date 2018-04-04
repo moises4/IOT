@@ -2,8 +2,6 @@ clear;
 clc;
 close all; % closes all figures
 
-
-
 coifImages = csvread('coifData.csv');
 dbImages = csvread('dbData.csv');
 
@@ -13,7 +11,7 @@ width = size(allPixelData, 2);
 
 normalizedData = [];
 
-printf('Starting normalization...');
+disp('Starting normalization...');
 
 for i = 1:width
     column = allPixelData(:,i);
@@ -24,3 +22,5 @@ for i = 1:width
         fprintf('%d out of %d columns processed\n', i, width);
     end
 end
+
+csvwrite('normalization.csv',normalizedData);

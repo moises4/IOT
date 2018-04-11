@@ -42,25 +42,26 @@ for i=1:10
       if (size(imageArray,3)== 3)
           imageArray = rgb2gray(imageArray);
       end
+      imageArray = imresize(imageArray,[320 240]);
       
       [len,width] = size(imageArray);
       newImage = reshape(imageArray, [1, (len*width)]);
       allImages = [allImages; i, newImage];
       
-      if (k > 90)
-          partTest = [partTest; i, newImage];
-      else
-          partTrain = [partTrain; i, newImage];
-      end
+%       if (k > 90)
+%           partTest = [partTest; i, newImage];
+%       else
+%           partTrain = [partTrain; i, newImage];
+%       end
       
     end
 end
 
 disp('Write CSV');
-csvwrite('Train.csv',allImages);
-disp('Train');
-csvwrite('partTrain.csv',partTrain);
-disp('partTrain');
-csvwrite('partTest.csv',partTest);
+csvwrite('ResizeTrain.csv',allImages);
+% disp('Train');
+% csvwrite('partTrain.csv',partTrain);
+% disp('partTrain');
+% csvwrite('partTest.csv',partTest);
 disp('Done');
 

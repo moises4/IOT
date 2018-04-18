@@ -34,9 +34,9 @@ while True:
         # Attempting to resize image to reduce the amount of data being passed around
         #image = resizeimage.resize_cover(image, [320, 240], validate=False)
 
-        coeffs = pywt.dwt2(image, 'bior3.5')
+        coeffs = pywt.wavedec2(image, 'bior6.8', level=3)
 
-        cA, (cH, cV, cD) = coeffs
+        [cA, (cH, cV, cD), (cH2, cV2, cD2), (cH3, cV3, cD3)] = coeffs
 
         x = len(cA);
         y = len(cA[0])

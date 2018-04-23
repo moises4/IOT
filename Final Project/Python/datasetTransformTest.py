@@ -10,18 +10,20 @@ from numpy import genfromtxt
 
 finalArray = [0] * (2376 * 4 + 1)
 wavelets = []
+label = [1]
 
 
 
 
-with open("/home/graves/CSVFiles/ResizeTrain.csv", "r") as f:
+with open("/home/graves/CSVFiles/partTest.csv", "r") as f:
     reader = csv.reader(f, delimiter=',')
     for i, line in enumerate(reader):
 
-        label = []
+        print "Start image number %d!" % (i)
 
-        label.extend((map(int, line[0])))
+        label[0] = int(line[0])
 
+        print "Label: %s" % (label[0])
 
         readLine = map(int, line[1:])
 
@@ -36,32 +38,46 @@ with open("/home/graves/CSVFiles/ResizeTrain.csv", "r") as f:
 
         x = len(cA);
         y = len(cA[0])
-        size = x * y
+        size = (x * y * 4 + 1)
 
-        #toimage(cA).show()
-        cA = cA.flatten()
+        if (size == 9505 ):
 
-        #toimage(cH).show()
-        cH = cH.flatten()
+            print "Size = %d" % (size)
 
-        #toimage(cV).show()
-        cV = cV.flatten()
+            #toimage(cA).show()
+            cA = cA.flatten()
 
-        #toimage(cD).show()
-        cD = cD.flatten()
+            #toimage(cH).show()
+            cH = cH.flatten()
+
+            #toimage(cV).show()
+            cV = cV.flatten()
+
+            #toimage(cD).show()
+            cD = cD.flatten()
 
 
-        wavelets = numpy.concatenate((label, cA, cH, cV, cD), axis=0)
+            wavelets = numpy.concatenate((label, cA, cH, cV, cD), axis=0)
 
-        wavelets = wavelets.flatten()
+            wavelets = wavelets.flatten()
 
-        # finalArray = numpy.concatenate((finalArray, wavelets), axis = 0)
+            # finalArray = numpy.concatenate((finalArray, wavelets), axis = 0)
 
-        finalArray = numpy.vstack((finalArray, wavelets))
+            print "Number of images: %d" % (len(finalArray))
+            print "Final Array width: %s" % (numpy.shape(finalArray),)
+            print "wavelets size: %d" % (len(wavelets))
 
-        # finalArray = finalArray.flatten()
+            finalArray = numpy.vstack((finalArray, wavelets))
 
-        print "Image %d compeleted!" % (i)
+            # finalArray = finalArray.flatten()
+
+            print "Image %d compeleted!" % (i)
+            print "\n"
+
+        else:
+
+            print "Image %d size mismatch!" % (i)
+            print "\n"
     
 finalArray = numpy.delete(finalArray, 0, 0)
 
@@ -69,4 +85,6 @@ print finalArray
 
 
 
-numpy.savetxt("wavelets.csv", finalArray, delimiter=",")
+numpy.savetxt("partTestWavelets.csv", finalArray, delimiter=",")
+
+print "CSV WRITE COMPLETE!\n"

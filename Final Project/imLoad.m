@@ -64,4 +64,3 @@ csvwrite('ResizeTrain.csv',allImages);
 % disp('partTrain');
 % csvwrite('partTest.csv',partTest);
 disp('Done');
-

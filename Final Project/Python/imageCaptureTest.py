@@ -1,10 +1,13 @@
 import cv2
 import pywt
-import numpy
+import numpy as np
 import csv
 from scipy.misc import toimage
 from PIL import Image
 from resizeimage import resizeimage
+import boto3
+import pandas as pd
+import io
 
 finalArray = [0] * (2376 * 4)
 
@@ -58,20 +61,32 @@ while True:
         cH = cH.flatten()
 
         #toimage(cV).show()
-        #cV = cV.flatten()
+        cV = cV.flatten()
 
         #toimage(cD).show()
         cD = cD.flatten()
 
-        finalArray = numpy.concatenate((cA, cH, cV, cD), axis=0)
+        finalArray = np.concatenate((cA, cH, cV, cD), axis=0)
 
-        finalArray = numpy.around(finalArray, decimals=2)
+        finalArray = np.around(finalArray, decimals=2)
 
-        finalArray = numpy.array([finalArray])
+        finalArray = np.array([finalArray])
 
         print finalArray
 
-        numpy.savetxt("export.csv", finalArray, delimiter=", ")
+        np.savetxt("export.csv", finalArray, delimiter=", ")
+
+
+        # client = boto3.client('runtime.sagemaker', region_name='us-east-1')
+
+        # response = client.invoke_endpoint(
+        #     EndpointName = 'kmeans-2018-04-25-04-35-11-958',
+        #     Body = 'export.csv',
+        #     ContentType = 'text/csv;label_size=1'
+        # )
+
+        # result = response['Body'].read().decode('ascii')
+
 
 
 cam.release()

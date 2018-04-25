@@ -8,6 +8,7 @@ from resizeimage import resizeimage
 import boto3
 import pandas as pd
 import io
+import AWSKeys
 
 finalArray = [0] * (2376 * 4)
 
@@ -20,6 +21,8 @@ cam.set(4,240)
 cv2.namedWindow("test")
 
 img_counter = 0
+
+print AWSKeys.secretKey
 
 while True:
     ret, frame = cam.read()
@@ -77,15 +80,15 @@ while True:
         np.savetxt("export.csv", finalArray, delimiter=", ")
 
 
-        # client = boto3.client('runtime.sagemaker', region_name='us-east-1')
+        client = boto3.client('runtime.sagemaker', region_name='us-east-1')
 
-        # response = client.invoke_endpoint(
-        #     EndpointName = 'kmeans-2018-04-25-04-35-11-958',
-        #     Body = 'export.csv',
-        #     ContentType = 'text/csv;label_size=1'
-        # )
+        response = client.invoke_endpoint(
+            EndpointName = 'kmeans-2018-04-25-04-35-11-958',
+            Body = 'export.csv',
+            ContentType = 'text/csv;label_size=1'
+        )
 
-        # result = response['Body'].read().decode('ascii')
+        result = response['Body'].read().decode('ascii')
 
 
 

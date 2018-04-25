@@ -1,12 +1,18 @@
 import cv2
 import pywt
 import numpy
+import csv
 from scipy.misc import toimage
 from PIL import Image
 from resizeimage import resizeimage
 
+finalArray = [0] * (2376 * 4)
 
 cam = cv2.VideoCapture(0)
+
+# Set webcam resolution
+cam.set(3,320)
+cam.set(4,240)
 
 cv2.namedWindow("test")
 
@@ -30,9 +36,10 @@ while True:
 
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+        height, width = image.shape[:2]
 
-        # Attempting to resize image to reduce the amount of data being passed around
-        #image = resizeimage.resize_cover(image, [320, 240], validate=False)
+        # Resize webcam image
+        #image = cv2.resize(image, (320, 240)) 
 
         coeffs = pywt.wavedec2(image, 'bior6.8', level=3)
 
@@ -42,31 +49,30 @@ while True:
         y = len(cA[0])
         size = x * y
 
+        #print size*4
+
         #toimage(cA).show()
-        cA = numpy.reshape(cA, [1, size])
+        cA = cA.flatten()
 
         #toimage(cH).show()
-        cH = numpy.reshape(cH, [1, size])
+        cH = cH.flatten()
 
         #toimage(cV).show()
-        cV = numpy.reshape(cV, [1, size])
+        #cV = cV.flatten()
 
         #toimage(cD).show()
-        cD = numpy.reshape(cD, [1, size])
+        cD = cD.flatten()
 
-        finalArray = numpy.concatenate((cA, cH, cV, cD), axis=1)
+        finalArray = numpy.concatenate((cA, cH, cV, cD), axis=0)
 
-        img_counter += 1
+        finalArray = numpy.around(finalArray, decimals=2)
 
-        print "size of image: %d by %d" % (len(image[0]), len(image))
-
-        print "cA array size: %d" % (len(cA[0]))
-
-        print "Final array size: %d" % (len(finalArray[0]))
+        finalArray = numpy.array([finalArray])
 
         print finalArray
 
-        print("{} written!".format(img_name))
+        numpy.savetxt("export.csv", finalArray, delimiter=", ")
+
 
 cam.release()
 

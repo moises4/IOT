@@ -53,8 +53,8 @@ To run this project, the following steps must be taken:
 ### Execution and How to Use
 
 
-### Credits:
-Moises Cruz
-Devon Graves
-Kyle Jonas
-Robert Parise
+### Credits
+* Moises Cruz
+* Devon Graves
+* Kyle Jonas
+* Robert Parise

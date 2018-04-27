@@ -41,6 +41,7 @@ The required installations needed to run this project include:
       1. Matlab Support Package for Raspberry Pi
       1. USB Webcam Support with Matlab
    1. Raspberry Pi with Matlab installed
+   
 To run this project, the following steps must be taken:
    1. Boot the Raspberry Pi
    1. Boot the laptop

@@ -51,8 +51,31 @@ To run this project, the following steps must be taken:
 ***
 ***
 ### Execution and How to Use
-
-
+### Execution and How to Use
+The following steps must be followed to successfully run the program.
+   1. Download DataSet
+      1. URL: ___
+   1. BuildDataSet.m
+      1. Add FilePath of the downloaded dataset to the builddataset.m directory.
+      1. Run the BuildDataSet.m
+      1. Wait for export of dataset .csv file to the directory.
+   1. TrainNN.m
+      1. Make sure dataset .csv file is in the directory of this file.
+      1. Run the TrainNN.m
+      1. Creates A trained and tested Neural Network based on the csv.
+   1. Deploy.m
+      1. Calls the raspberry pi for an image.
+      1. Takes the image and performs the wavelet transform.
+      1. Builds the feature vector.
+      1. Gets classified by the neural network.
+      1. Outputs result to the matlab console.
+      
+***
+***
+### Additional Information
+For Additional Information, please view the system documentation located in this repository.
+***
+***
 ### Credits
 * Moises Cruz
 * Devon Graves

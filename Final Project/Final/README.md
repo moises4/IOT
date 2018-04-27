@@ -8,7 +8,7 @@ The Intelligent Recyclable Identification System is a supervised learning system
 1. [Prerequisite Installations](#prereqs)
 2. [System Requirements](#systeqs)
 3. [Installation & Integration](#install)
-4. [Execution and How to Use](#exeUses)
+4. [Execution & How to Use](#exeUses)
 ***
 ***
 ### Prerequisite Installations
@@ -51,3 +51,10 @@ To run this project, the following steps must be taken:
 ***
 ***
 ### Execution and How to Use
+
+
+### Credits:
+Moises Cruz
+Devon Graves
+Kyle Jonas
+Robert Parise

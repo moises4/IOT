@@ -3,10 +3,10 @@
 
 ***
 ## Table of Contents
-1. [Prereq](#prereqs)
-2. [SysReq](#systeqs)
-3. [Instal](#install)
-4. [ExeUse](#exeUses)
+1. [Prerequisite Installations](#prereqs)
+2. [System Requirements](#systeqs)
+3. [Installation & Integration](#install)
+4. [Execution and How to Use](#exeUses)
 ***
 ### Prereq
 The required installations needed to run this project include:
@@ -19,6 +19,6 @@ The required installations needed to run this project include:
 
    
 ***
-### SysReq
-### Instal
-### ExeUse
+### System Requirements
+### Installation & Integration
+### Execution and How to Use

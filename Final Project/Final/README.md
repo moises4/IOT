@@ -54,7 +54,7 @@ To run this project, the following steps must be taken:
 ### Execution and How to Use
 The following steps must be followed to successfully run the program.
    1. Download DataSet
-      1. URL: ___
+      1. [Flickr Material Database](https://people.csail.mit.edu/celiu/CVPR2010/FMD/)
    1. BuildDataSet.m
       1. Add FilePath of the downloaded dataset to the builddataset.m directory.
       1. Run the BuildDataSet.m

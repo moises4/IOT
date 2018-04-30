@@ -51,7 +51,6 @@ To run this project, the following steps must be taken:
 ***
 ***
 ### Execution and How to Use
-### Execution and How to Use
 The following steps must be followed to successfully run the program.
    1. Download DataSet
       1. [Flickr Material Database](https://people.csail.mit.edu/celiu/CVPR2010/FMD/)

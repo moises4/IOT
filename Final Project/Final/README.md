@@ -1,5 +1,5 @@
 
-# Computer Vision Sign Language Detection
+# Intelligent Recyclable Identification System (sort of)
 
 The Intelligent Recyclable Identification System is a supervised learning system designed to classify objects into categories based on their material and sort those objects into recyclable or non recyclable. The system will utilize a Raspberry Pi running MATLAB, a USB camera, and a laptop with MATLAB in order to train, test, and implement the Intelligent Recyclable Identification System. The project will complete the dataset and train the convolutional neural network on the laptop, and then will utilize the Raspberry Pi and USB camera in deployment of the system. Based on the results of the convolutional neural network, the system will sort similar materials into appropriate groups.
 ***

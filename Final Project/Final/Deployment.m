@@ -51,3 +51,5 @@ for i=1:10
     close all
     
 end
+
+clear mypi;

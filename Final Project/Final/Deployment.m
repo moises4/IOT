@@ -9,7 +9,7 @@ wcam = webcam(mypi);
 % camList = webcamlist;
 % wcam = webcam(1);
  
-% for i=1:10
+for i=1:10
     img = snapshot(wcam);
     
     img = rgb2gray(img);
@@ -44,10 +44,10 @@ wcam = webcam(mypi);
     imds = imageDatastore('image.jpg');
     
     YPred = classify(trainedNet,imds)   
+   
+    disp('Press a key to continue');
+    pause;
     
-%     disp('Press a key to continue');
-%     pause;
-%     
-%     close all
-%     
-% end
+    close all
+    
+end

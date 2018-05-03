@@ -2,22 +2,25 @@ clear;
 clc;
 close all;
 
+load('trainedNet.mat');
+
 mypi = raspi('192.168.110.164','pi','raspberry');
 wcam = webcam(mypi);
-
-while (1)
+% camList = webcamlist;
+% wcam = webcam(1);
+ 
+% for i=1:10
     img = snapshot(wcam);
+    
     img = rgb2gray(img);
-    img = imresize(img,[320 240]);
+    img = imresize(img,[160 120]);
 
-    figure;
-    imagesc(img);
-    drawnow;
-
-    [c,s]=wavedec2(img,3,'bior6.8'); 
-
-    [H3,V3,D3] = detcoef2('all',c,s,3);
-    A3 = appcoef2(c,s,'bior6.8',3);
+    level = 3;
+    wavelet = 'bior1.1';
+    
+    [c,s]=wavedec2(img,level,wavelet); 
+    [H3,V3,D3] = detcoef2('all',c,s,level);
+    A3 = appcoef2(c,s,wavelet,level);
 
     A3img = wcodemat(A3,255,'mat',1);
     H3img = wcodemat(H3,255,'mat',1);
@@ -30,27 +33,21 @@ while (1)
     VnewImage = reshape(V3img, [1, (len*width)]);
     DnewImage = reshape(D3img, [1, (len*width)]);
 
-    figure;
-    subplot(2,2,1);
-    imagesc(A3img);
-    colormap pink(255);
-    title('Approximation Coef. of Level 3');
-    subplot(2,2,2)
-    imagesc(H3img);
-    title('Horizontal detail Coef. of Level 3');
-    subplot(2,2,3)
-    imagesc(V3img);
-    title('Vertical detail Coef. of Level 3');
-    subplot(2,2,4)
-    imagesc(D3img);
-    title('Diagonal detail Coef. of Level 3');
-
-    % Four 54x44 wavelet images
     allImages = [AnewImage, HnewImage, VnewImage, DnewImage];
 
-    disp('Push to NN');
 
-    disp('Press a key to continue');
-    pause;
+    allImages = reshape(allImages,[40,30]);
+    allImages = mat2gray(allImages);
     
-end
+    imwrite(allImages,'image.jpg');
+    
+    imds = imageDatastore('image.jpg');
+    
+    YPred = classify(trainedNet,imds)   
+    
+%     disp('Press a key to continue');
+%     pause;
+%     
+%     close all
+%     
+% end

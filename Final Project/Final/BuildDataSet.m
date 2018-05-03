@@ -40,15 +40,17 @@ for i=1:10
         if (size(imageArray,3)== 3)
           imageArray = rgb2gray(imageArray);
         end
-        imageArray = imresize(imageArray,[320 240]);
+        imageArray = imresize(imageArray,[160 120]);
 
 %         [len,width] = size(imageArray);
 %         newImage = reshape(imageArray, [1, (len*width)]);
-
-        [c,s]=wavedec2(imageArray,3,'bior6.8'); 
-
-        [H3,V3,D3] = detcoef2('all',c,s,3);
-        A3 = appcoef2(c,s,'bior6.8',3);
+        
+        level = 3;
+        wavelet = 'bior1.1';
+        
+        [c,s]=wavedec2(imageArray,level,wavelet); 
+        [H3,V3,D3] = detcoef2('all',c,s,level);
+        A3 = appcoef2(c,s,wavelet,level);
         
         A3img = wcodemat(A3,255,'mat',1);
         H3img = wcodemat(H3,255,'mat',1);
@@ -109,8 +111,8 @@ for i=1:row
     if(index>90)
         TestWavelet = [TestWavelet; data(i,:)];
 
-    %  Test CSV
-    elseif (index<21)
+    %  Train CSV
+    else
         TrainWavelet = [TrainWavelet; data(i,:)];
     end
     
@@ -126,6 +128,5 @@ end
 disp('Write CSV');
 csvwrite('TrainWavelet.csv',TrainWavelet);
 csvwrite('TestWavelet.csv',TestWavelet);
-
 
 disp('Done');

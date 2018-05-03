@@ -1,5 +1,6 @@
 
-# (semi) Intelligent Recyclable Identification System
+# Intelligent Recyclable Identification System (sort of)
+
 The Intelligent Recyclable Identification System is a supervised learning system designed to classify objects into categories based on their material and sort those objects into recyclable or non recyclable. The system will utilize a Raspberry Pi running MATLAB, a USB camera, and a laptop with MATLAB in order to train, test, and implement the Intelligent Recyclable Identification System. The project will complete the dataset and train the convolutional neural network on the laptop, and then will utilize the Raspberry Pi and USB camera in deployment of the system. Based on the results of the convolutional neural network, the system will sort similar materials into appropriate groups.
 ***
 ***
@@ -57,12 +58,14 @@ The following steps must be followed to successfully run the program.
       1. Add FilePath of the downloaded dataset to the builddataset.m directory.
       1. Run the BuildDataSet.m
       1. Wait for export of dataset .csv file to the directory.
-   1. TrainNN.m
+   1. ConvolutionalNN.m
       1. Make sure dataset .csv file is in the directory of this file.
       1. Run the TrainNN.m
       1. Creates A trained and tested Neural Network based on the csv.
+      1. Saves a .mat file to your computer
    1. Deploy.m
       1. Calls the raspberry pi for an image.
+      1. Loads the .mat file into the workspace.
       1. Takes the image and performs the wavelet transform.
       1. Builds the feature vector.
       1. Gets classified by the neural network.

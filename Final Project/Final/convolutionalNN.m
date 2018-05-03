@@ -2,9 +2,6 @@ clc;
 clear;
 close all;
 
-%data = readtable('C:\Users\dhg5054.PSU-ERIE\Downloads\SingleWavelets.csv')
-
-
 data = csvread('C:\Users\dhg5054.PSU-ERIE\Downloads\AllWavelets (2).csv');
 images = data(:, 2:end);
 dataSize = size(data, 1);
@@ -56,7 +53,7 @@ options = trainingOptions('sgdm',...
     'CheckpointPath', 'X:\IOT-master\Final Project');
 [trainedNet, trainedinfo] = trainNetwork(imageData, layers, options);
 
-
+save trainedNet;
 
 
 
